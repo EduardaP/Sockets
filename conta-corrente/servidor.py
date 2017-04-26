@@ -27,15 +27,26 @@ print ('[SERVIDOR] Conexao com o cliente realizada. Endereco da conexao:', addr)
 while 1:
     print ("[SERVIDOR] Aguardando dados do cliente")
     operacao = conn.recv(BUFFER_SIZE).decode("utf-8")
+
+    hellen= operacao.strip().split(" ")
+    if hellen[0] == "SALDO":
+        resposta = str(saldo)
+    elif hellen[0]== "DEBITO":
+        valor= int(hellen[1])
+        saldo=saldo-valor
+        resposta = str(saldo)
+    elif hellen[0]== "CREDITO":
+        valor= int(hellen[1])
+        saldo=saldo+valor
+        resposta = str(saldo)
+    else:
+        resposta="ERRO"
+
+
     if not operacao: break
     print ("[SERVIDOR] Dados recebidos do cliente com sucesso: \"" + operacao + "\"")
     
-    # TODO interpretar a operacao
-    # ... 
-    # TODO alterar saldo se necessario
-    # ...
     
-    resposta = str(saldo)
 
     print ("[SERVIDOR] Enviando resposta para o cliente")
     conn.send(resposta.encode())  # echo
